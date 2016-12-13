@@ -4,9 +4,33 @@
 #Excercise 6-1 from Murach's Python Programming Book
 #Movie List uses a 3D list now to keep movie information, and display it.
 
+#UPDATED: Program now uses file I/O to write and read data from CSV file
+
 
 
 #!/usr/bin/env python3
+
+import csv
+
+#Global variable with the name of text file to read/write from
+FILENAME = "movies.txt"
+
+#Reads every line from file, and stores them as movies in a 2D list
+def read_movies():
+    movies = []
+    with open(FILENAME, "r", newline="") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            movies.append(row)
+
+    return movies
+
+#Writes every movies from 2D list, into the text file as a line each
+def write_movies(movies):
+    with open(FILENAME, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(movies)
+    
 
 #Display available options
 def display_menu():
@@ -38,18 +62,25 @@ def add_movie(movie_list):
     movie_list.append(new_movie)
     print(movie_title + " was added.\n")
 
+    #Call to write_movies() to save/update data
+    write_movies(movie_list)
+
 #Removes a movie from the parameter list  
 def del_movie(movie_list):
     movie_number = int(input("Number:\t"))
     if movie_number > 0 and movie_number <= len(movie_list):
         movie_del = movie_list.pop(movie_number-1)
         print(movie_del[0] + " was deleted.\n")
+
+        #Call to write_movies() to save/update data
+        write_movies(movie_list)
     else:
         print("Invalid movie number, please try again")
         
 #Main
 def main():
-    movies = [ ["Monty Python and the Holy Grail", 1975, 9.95], ["On the Waterfront", 1954, 5.59], ["Cat on a Hot Tin Roof", 1958, 7.95] ]
+    #Load the movie list from text file
+    movies = read_movies()
 
     display_menu()
 
@@ -67,7 +98,9 @@ def main():
             print("Please enter a valid command\n")
             display_menu()
 
-
+    #Before closing, write to file (save data)
+    write_movies(movies)
+    
     print("\nGood Bye!")
 
 #If movie list is the main module, call main
