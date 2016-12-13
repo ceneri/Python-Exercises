@@ -1,11 +1,14 @@
 #Cesar Neri
-#December 11, 2016
+#December 13, 2016
 
-#Movie List uses a 2D list to keep movie information, and display it.
+#Excercise 6-1 from Murach's Python Programming Book
+#Movie List uses a 3D list now to keep movie information, and display it.
+
+
 
 #!/usr/bin/env python3
 
-#display available options
+#Display available options
 def display_menu():
     print ("COMMAND MENU")
     print("list - List all Movies\nadd - Add a movie\n" +
@@ -16,20 +19,26 @@ def display_menu():
 def list_movies(movie_list):
     count = 1
     for item in movie_list:
-        print(str(count) + ". " + item[0] + " (" + str(item[1]) + ")" )
+        print(str(count) + ". " + item[0] + " (" + str(item[1]) + ") @ " + str(item[2]) )
         count += 1
     
     print()
 
 #Adds a new movie to the parameter list        
 def add_movie(movie_list):
+    #Get user input
     movie_title = input("Name:\t")
     movie_year = input("Year:\t")
-    new_movie = [movie_title, movie_year]
+    movie_price = round( float(input("Price:\t")), 2)
+    
+    #Create new movie obj (list)
+    new_movie = [movie_title, movie_year, movie_price]
+
+    #Add ne movie to list of movies
     movie_list.append(new_movie)
     print(movie_title + " was added.\n")
 
-#removes a movie from the parameter list  
+#Removes a movie from the parameter list  
 def del_movie(movie_list):
     movie_number = int(input("Number:\t"))
     if movie_number > 0 and movie_number <= len(movie_list):
@@ -38,9 +47,9 @@ def del_movie(movie_list):
     else:
         print("Invalid movie number, please try again")
         
-#MAIN
+#Main
 def main():
-    movies = [ ["Monty Python and the Holy Grail", 1975], ["On the Waterfront", 1954], ["2012", 2012] ]
+    movies = [ ["Monty Python and the Holy Grail", 1975, 9.95], ["On the Waterfront", 1954, 5.59], ["Cat on a Hot Tin Roof", 1958, 7.95] ]
 
     display_menu()
 
@@ -61,7 +70,7 @@ def main():
 
     print("\nGood Bye!")
 
-
+#If movie list is the main module, call main
 if __name__ == "__main__":
     main()
 
