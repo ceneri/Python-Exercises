@@ -1,52 +1,60 @@
 #Cesar Neri
-#December 10, 2016
+#December 13, 2016
 
-#Excercise 3-2 from Murach's Python Programming Book
+#Excercise 6-1 from Murach's Python Programming Book
 
-#Get sets a set of scores, as many as the user wants, print the total and their average
+#Get a set of scores from the user and prints the processed data
+#It now uses functions that return lists, and take lists as arguments
+
+
 
 #!/usr/bin/env python3
 
-#Greeting
-print("Test Scores Program")
-
-#Initial response
-response = "y"
-
-#Check user response (run program more than once)
-while response.lower() == "y":
-
-    #Clear score and count
-    totalScore = 0
-    count = 0
-
-    #Get user data
-    print("\nEnter a set of scores, enter 'end' to end input\n========================================")
+#Get every score from the user
+def get_scores():
+    scores = []
     
-    #Get more than one test score
     while True:
-        score  = input("Enter Test Score:\t\t")
-        
-        #validate score
-        if score.lower() == "end":
+        score = input("Enter the test score:\t")
+        if score == "x":
             break
-        elif int(score) > 0 and int(score) <= 100:  #validate score range
-            totalScore += int(score)
-            count += 1
+        elif int(score) < 0 or int(score) > 100 :
+            print ("Please enter a valid score between 1 and 100")
         else:
-            print("Test score must be within 0 and 100, please try again.")
-        
-        
-    print("========================================")
+            scores.append(int(score))
 
-    #Calculate Output
-    averageScore = round(totalScore/count, 2)
+    return scores
 
-    #Print output
-    print ("Total Score: \t" + str(totalScore) )
-    print ("Average Score: \t" + str(averageScore) )
+#Calculates the outut values and prints them
+def process_scores(scores):
+    total = 0
+    count = len(scores)
+    low = min(scores)
+    high = max(scores)
+    median = scores [count//2]
 
-    #Get new response
-    response = input("Enter another set of scores (y/n)?\t")
+    for item in scores:
+        total += item
+ 
+    average = round(total/count, 2)
 
-print("\nGoodbye!")
+    print("\nTotal\t\t\t", total)
+    print("Number of Scores:\t", count)
+    print("Average Score:\t\t", average)
+    print("Low Score\t\t", low)
+    print("High Score\t\t", high)
+    print("Median Sccore\t\t", median)    
+
+#Calls the get_scores and process_scores functions from the user
+def main():
+    print("Test Scores Program\nEnter 'x' to exit.\n")
+
+    scores = get_scores()
+
+    process_scores(scores)
+
+    print("\nGoodbye!")
+
+#If TestScores is the main module, call main()
+if __name__ == "__main__":
+    main()
