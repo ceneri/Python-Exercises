@@ -1,13 +1,12 @@
 #Cesar Neri
 #December 14, 2016
 
-#Excercise 6-1 from Murach's Python Programming Book
+#Excercise 8-2 from Murach's Python Programming Book
 #Movie List uses a 3D list now to keep movie information, and display it.
 
 #UPDATED: Program now uses file I/O to write and read data from CSV file
 
-#UPDATED: Program now handlegs file and value exceptions, as well as data validation on year and price
-
+#UPDATED: Program now handles file and value exceptions, as well as data validation on year and price
 
 
 #!/usr/bin/env python3
@@ -16,7 +15,7 @@ import csv
 import sys
 
 #Global variable with the name of text file to read/write from
-FILENAME = "movies.txt"
+FILENAME = "movies.csv"
 
 #Reads every line from file, and stores them as movies in a 2D list
 def read_movies():
@@ -30,10 +29,12 @@ def read_movies():
         return movies
     
     except FileNotFoundError:
-        print("Could not find " + FILENAME + " file.")
+        #print("Could not find " + FILENAME + " file.")
+        #exit_program
+        return movies
     except Exception as e:
-            print( type(e), e)
-            exit_progarm()
+        print( type(e), e)
+        exit_program()
 
 #Writes every movies from 2D list, into the text file as a line each
 def write_movies(movies):
@@ -41,10 +42,14 @@ def write_movies(movies):
         with open(FILENAME, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(movies)
+
+    except OSError as e:
+        print( type(e))
+        exit_program()
             
     except Exception as e:
         print( type(e), e)
-        exit_progarm()
+        exit_program()
 
 
 #function to cllose program witha message
