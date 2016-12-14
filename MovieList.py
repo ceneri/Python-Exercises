@@ -1,36 +1,56 @@
 #Cesar Neri
-#December 13, 2016
+#December 14, 2016
 
 #Excercise 6-1 from Murach's Python Programming Book
 #Movie List uses a 3D list now to keep movie information, and display it.
 
 #UPDATED: Program now uses file I/O to write and read data from CSV file
 
+#UPDATED: Program now handlegs file and value exceptions, as well as data validation on year and price
+
 
 
 #!/usr/bin/env python3
 
 import csv
+import sys
 
 #Global variable with the name of text file to read/write from
 FILENAME = "movies.txt"
 
 #Reads every line from file, and stores them as movies in a 2D list
 def read_movies():
-    movies = []
-    with open(FILENAME, "r", newline="") as file:
-        reader = csv.reader(file)
-        for row in reader:
-            movies.append(row)
+    try:
+        movies = []
+        with open(FILENAME, "r", newline="") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                movies.append(row)
 
-    return movies
+        return movies
+    
+    except FileNotFoundError:
+        print("Could not find " + FILENAME + " file.")
+    except Exception as e:
+            print( type(e), e)
+            exit_progarm()
 
 #Writes every movies from 2D list, into the text file as a line each
 def write_movies(movies):
-    with open(FILENAME, "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerows(movies)
-    
+    try:
+        with open(FILENAME, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(movies)
+            
+    except Exception as e:
+        print( type(e), e)
+        exit_progarm()
+
+
+#function to cllose program witha message
+def exit_program():
+    print("terminating program.")
+    sys.exit()
 
 #Display available options
 def display_menu():
@@ -50,15 +70,39 @@ def list_movies(movie_list):
 
 #Adds a new movie to the parameter list        
 def add_movie(movie_list):
+
     #Get user input
     movie_title = input("Name:\t")
-    movie_year = input("Year:\t")
-    movie_price = round( float(input("Price:\t")), 2)
+
+    #validate year
+    while True:
+        try:
+            movie_year = int(input("Year:\t"))
+            if movie_year < 1896 or movie_year > 2017:
+                print("Movie year must be between 1896 and 2017. Please try again.")
+                continue
+        except ValueError:
+            print("Invalid year value. Please try again.")
+            continue
+        break
+
+        #validate price
+    while True:
+        try:
+            movie_price = round( float(input("Price:\t")), 2)
+            if movie_price <= 0 or movie_price >= 100:
+                print("Movie price must be greater than zero but less than 100. Please try again.")
+                continue
+        except ValueError:
+            print("Invalid price value. Please try again.")
+            continue
+
+        break
     
     #Create new movie obj (list)
     new_movie = [movie_title, movie_year, movie_price]
 
-    #Add ne movie to list of movies
+    #Add thee movie to list of movies
     movie_list.append(new_movie)
     print(movie_title + " was added.\n")
 
@@ -67,15 +111,22 @@ def add_movie(movie_list):
 
 #Removes a movie from the parameter list  
 def del_movie(movie_list):
-    movie_number = int(input("Number:\t"))
-    if movie_number > 0 and movie_number <= len(movie_list):
-        movie_del = movie_list.pop(movie_number-1)
-        print(movie_del[0] + " was deleted.\n")
+    while True:
+        try:
+            movie_number = int(input("Number:\t"))
+        except ValueError:
+            print("Invalid Integer. Please try again.")
+            continue
+            
+        if movie_number > 0 and movie_number <= len(movie_list):
+            movie_del = movie_list.pop(movie_number-1)
+            print(movie_del[0] + " was deleted.\n")
 
-        #Call to write_movies() to save/update data
-        write_movies(movie_list)
-    else:
-        print("Invalid movie number, please try again")
+            #Call to write_movies() to save/update data
+            write_movies(movie_list)
+            break
+        else:
+            print("Invalid movie number. Please try again.")
         
 #Main
 def main():
