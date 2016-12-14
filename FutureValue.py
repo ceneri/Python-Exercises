@@ -1,10 +1,12 @@
 #Cesar Neri
-#December 10, 2016
+#December 14, 2016
 
-#Excercise 4-1 from Murach's Python Programming Book (Future value calculator)
+#Excercise 8-1 from Murach's Python Programming Book (Future value calculator)
 
 #Function main(), get_float(), and get_int() defined.
 #main() called only if it is the main module
+
+#UPODATED: Exception handling added to helper functions
 
 
 
@@ -61,22 +63,31 @@ def main():
 #Takes a prompt argument to get input from user, it is then transformed to float and returned
 def get_float(prompt, low_val, high_val):
     while True:
-        fNumber = float(input(prompt));
-        if fNumber > low_val and fNumber <= high_val:
-            break
-        else:
-            print("Entry must be greater than " + str(low_val) + " and less than or equal to " + str(high_val) + ". Please try again.")
+        try:
+            fNumber = float(input(prompt));
+            if fNumber > low_val and fNumber <= high_val:
+                break
+            else:
+                print("Entry must be greater than " + str(low_val) + " and less than or equal to " + str(high_val) + ". Please try again.")
+                
+        except ValueError:
+            print("Invalid float number entered. Please try again.")
+            continue
 
     return fNumber
 
 #Takes a prompt argument to get input from user, it is then transformed to int and returned
 def get_int(prompt, low_val, high_val):
     while True:
-        fNumber = int(input(prompt));
-        if fNumber > low_val and fNumber <= high_val:
-            break
-        else:
-            print("Entry must be greater than " + str(low_val) + " and less than or equal to " + str(high_val) + ". Please try again.")
+        try:
+            fNumber = int(input(prompt));
+            if fNumber > low_val and fNumber <= high_val:
+                break
+            else:
+                print("Entry must be greater than " + str(low_val) + " and less than or equal to " + str(high_val) + ". Please try again.")
+        except ValueError:
+            print("Invalid integer number entered. Please try again.")
+            continue
 
     return fNumber
     
