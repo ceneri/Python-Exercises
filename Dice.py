@@ -3,6 +3,8 @@
 
 #Excercise 14-1 from Murach's Python Programming Book
 
+#UPDATE: __str__() __iter__() and __next__() added
+
 
 #!/usr/bin/env python3
 
@@ -44,6 +46,10 @@ class Die:
         elif self.__value == 6:
             return " _____\n|o   o|\n|o   o|\n|o___o|\n"
         
+    
+    def __str__(self):
+        return self.image
+        
 
                 
 class Dice:
@@ -69,4 +75,18 @@ class Dice:
             total += die.value
 
         return total
+
+    
+    def __iter__(self):
+        self.__index = -1           #initiate index for iteration
+        return self
+
+    #gets the next die
+    def __next__(self):
+        if self.__index == len(self.__list) - 1:
+            raise StopIteration
+        else:
+            self.__index += 1
+            die = self.__list[self.__index]
+            return die
             

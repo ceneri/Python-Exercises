@@ -3,6 +3,9 @@
 
 #Excercise 14-1 from Murach's Python Programming Book
 
+#UPDATE: use of __str__() __iter__() and __next__()
+
+
 
 #!/usr/bin/env python3
 
@@ -34,8 +37,8 @@ def main():
         # roll the dice
         dice.rollAll()
         print("YOUR ROLL: ")
-        for die in dice.list:
-            print(die.image)
+        for die in dice:
+            print(die)
         print("\nTotal:\t" + str(dice.getTotal()))
         print("\n")
 
